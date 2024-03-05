@@ -1,0 +1,19 @@
+# 要连接的模拟器的 adb 端口
+ADB_PORT: 16384
+# 要签到的游戏
+SIGNIN_GAMES:
+  - 明日方舟
+ONEPUSH_CONFIG:
+  # 钉钉推送
+  - notifier: dingtalk
+    params:
+      markdown: false
+      token: ""
+      secret: ""
+  # 企业微信推送
+  - notifier: wechatworkapp
+    params:
+      markdown: false
+      corpid: ""
+      corpsecret: ""
+      agentid: ""

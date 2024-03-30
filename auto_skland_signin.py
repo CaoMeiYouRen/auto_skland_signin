@@ -180,6 +180,19 @@ def handle_pop_up():
         #     time.sleep(3)
 
 
+# 校验是否白屏
+def verify_screen(maxTime: int = 3):
+    texts = ["我知道了", "下次再说", "确定", "回顶部", "发现", "手机号登录"]
+    for _ in range(maxTime):
+        result = get_new_screenshot_OCR_result()
+        if result:
+            for text in texts:
+                if match_text_by_result(result, text):
+                    return True
+        time.sleep(3)
+    return False
+
+
 def turn2main_page(first_tab=None):
     # 启动应用程序
     activity_name = ".SplashActivity"
@@ -193,7 +206,13 @@ def turn2main_page(first_tab=None):
             f"{package_name}/{package_name + activity_name}",
         ]
     )
-    time.sleep(8)
+    if not verify_screen(10):
+        send_notify(
+            "森空岛签到通知",
+            "签到失败！森空岛无法正常启动！",
+            config.get("ONEPUSH_CONFIG", []),
+        )
+        return
     # 向右拖动tab，确保签到顺序
     if first_tab:
         adb_reset_tab(first_tab)
@@ -384,6 +403,8 @@ def pop_up_windows(str):
 # 推送消息
 def send_notify(title, text, config):
     logging.info(f"{title}\n{text}")
+    if not config:
+        return
     for item in config:
         response = notify_me(title, text, item["notifier"], item["params"])
         logging.info(response.text)

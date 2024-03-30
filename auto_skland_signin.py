@@ -182,7 +182,7 @@ def handle_pop_up():
 
 # 校验是否白屏
 def verify_screen(maxTime: int = 3):
-    texts = ["我知道了", "下次再说", "确定", "回顶部", "发现", "手机号登录"]
+    texts = ["我知道了", "下次再说", "确定", "回顶部", "发现", "手机号登录", "推荐"]
     for _ in range(maxTime):
         result = get_new_screenshot_OCR_result()
         if result:
@@ -212,7 +212,7 @@ def turn2main_page(first_tab=None):
             "签到失败！森空岛无法正常启动！",
             config.get("ONEPUSH_CONFIG", []),
         )
-        return
+        exit(1)
     # 向右拖动tab，确保签到顺序
     if first_tab:
         adb_reset_tab(first_tab)

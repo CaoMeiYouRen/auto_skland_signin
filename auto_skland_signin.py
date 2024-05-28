@@ -153,31 +153,30 @@ def get_tab_height():
 
 
 # 处理主界面可能出现的弹窗
-def handle_pop_up():
-    result = get_new_screenshot_OCR_result()
-
-    for i in result:
-        if "我知道了" in i[1][0]:
-            adb_tap_center(i[0])
-        if "下次再说" in i[1][0]:
-            adb_tap_center(i[0])
-        if "确定" in i[1][0]:
-            adb_tap_center(i[0])
-        if "森空岛没有响应" in i[1][0]:
-            relaunch_APP()
-        if "回顶部" in i[1][0]:
-            adb_tap_center(i[0])
-        if "手机号登录" in i[1][0]:
-            logging.error(f"森空岛当前未登录！")
-            send_notify(
-                "森空岛签到通知", "森空岛当前未登录！", config.get("ONEPUSH_CONFIG", [])
-            )
-            exit(1)
-
-        # if "发现" in i[1][0]:
-        #     center = i[0][0]
-        #     os.system("adb shell input tap {} {}".format(center[0], center[1]))
-        #     time.sleep(3)
+def handle_pop_up(maxTime: int = 3):
+    for _ in range(maxTime):
+        result = get_new_screenshot_OCR_result()
+        for i in result:
+            if "我知道了" in i[1][0]:
+                adb_tap_center(i[0])
+            if "下次再说" in i[1][0]:
+                adb_tap_center(i[0])
+            if "确定" in i[1][0]:
+                adb_tap_center(i[0])
+            if "阅读并同意" in i[1][0]:
+                adb_tap_center(i[0])
+            if "森空岛没有响应" in i[1][0]:
+                relaunch_APP()
+            if "回顶部" in i[1][0]:
+                adb_tap_center(i[0])
+            if "手机号登录" in i[1][0]:
+                logging.error(f"森空岛当前未登录！")
+                send_notify(
+                    "森空岛签到通知",
+                    "森空岛当前未登录！",
+                    config.get("ONEPUSH_CONFIG", []),
+                )
+                exit(1)
 
 
 # 校验是否白屏

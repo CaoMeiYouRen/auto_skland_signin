@@ -156,6 +156,9 @@ def get_tab_height():
 def handle_pop_up(maxTime: int = 3):
     for _ in range(maxTime):
         result = get_new_screenshot_OCR_result()
+        if not result:
+            logging.info("未检测到弹窗")
+            return
         for i in result:
             if "我知道了" in i[1][0]:
                 adb_tap_center(i[0])
@@ -254,6 +257,7 @@ def get_OCR_result(screenshot_path):
                 # det_max_side_len=1280,
             )  # need to run only once to download and load model into memory
             result = ocr.ocr(screenshot_path, cls=False)
+            print(result)
             result = result[0]
             end = datetime.now()
             diff = round(end.timestamp() - start.timestamp(), 3)
@@ -320,6 +324,9 @@ def sign_in_by_game_benefits(tab_name):
         return False
 
     result = get_new_screenshot_OCR_result()
+    if not result:
+        logging.info("OCR识别失败，未获取到结果")
+        return False
     # calculate = match_text_by_result(result, "累签活动")
     # if calculate:
     #     x, y = calculate_center(calculate)
@@ -428,7 +435,8 @@ if __name__ == "__main__":
     os.system(f"adb connect 127.0.0.1:{ADB_PORT}")
     os.system("adb devices")
     # 修改当前模拟器 分辨率，避免分辨率过高或过低。如果OCR效率较低，可以考虑降低分辨率 1080x1920 720x1280
-    os.system("adb shell wm size 1080x1920")
+    # 1920x1080 1280x720
+    os.system("adb shell wm size 1920x1080")
     # 修改当前模拟器 DPI，解决DPI过高时 tab 栏缩一块了 320 240
     os.system("adb shell wm density 320")
     # 创建截图文件夹

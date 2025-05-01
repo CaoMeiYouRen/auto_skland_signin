@@ -194,7 +194,7 @@ def verify_screen(maxTime: int = 3):
 
 def turn2main_page(first_tab=None):
     # 启动应用程序
-    activity_name = ".SplashActivity"
+    activity_name = ".splash.SplashActivity"
     subprocess.call(
         [
             "adb",

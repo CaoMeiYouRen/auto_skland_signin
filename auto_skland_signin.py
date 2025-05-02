@@ -436,7 +436,8 @@ if __name__ == "__main__":
     os.system("adb devices")
     # 修改当前模拟器 分辨率，避免分辨率过高或过低。如果OCR效率较低，可以考虑降低分辨率 1080x1920 720x1280
     # 1920x1080 1280x720
-    os.system("adb shell wm size 1920x1080")
+    # os.system("adb shell wm size 1920x1080")
+    os.system("adb shell wm size 1080x1920")
     # 修改当前模拟器 DPI，解决DPI过高时 tab 栏缩一块了 320 240
     os.system("adb shell wm density 320")
     # 创建截图文件夹
